@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.doOnLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -31,6 +32,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.criminalintent.DatePickerFragment.Companion.BUNDLE_KEY_DATE
 import com.example.criminalintent.databinding.FragmentCrimeDetailBinding
 import com.example.criminalintent.models.Crime
+import com.example.criminalintent.utils.getScaledBitmap
 import com.example.criminalintent.viewmodel.CrimeDetailViewModel
 import com.example.criminalintent.viewmodel.CrimeDetailViewModelFactory
 import kotlinx.coroutines.launch
@@ -197,6 +199,7 @@ class CrimeDetailFragment : Fragment() {
                 }
                 startActivity(intent)
             }
+            updatePhoto(crime.photoFileName)
         }
     }
 
@@ -317,6 +320,28 @@ class CrimeDetailFragment : Fragment() {
             crimeDetailViewModel.updateCrime { oldCrime ->
                 oldCrime.copy(photoFileName = photoName)
             }
+        }
+    }
+
+    private fun updatePhoto(photoFileName: String?) {
+        if (binding.crimePhoto.tag != photoFileName) {
+            val photoFile = photoFileName?.let {
+                File(requireContext().applicationContext.filesDir, it)
+            }
+            if (photoFile?.exists() == true) {
+                binding.crimePhoto.doOnLayout { measuredView ->
+                    val scaledBitmap = getScaledBitmap(
+                        photoFile.path,
+                        measuredView.width,
+                        measuredView.height
+                    )
+                    binding.crimePhoto.setImageBitmap(scaledBitmap)
+                    binding.crimePhoto.tag = photoFileName
+                }
+            }
+        } else {
+            binding.crimePhoto.setImageBitmap(null)
+            binding.crimePhoto.tag = null
         }
     }
 
