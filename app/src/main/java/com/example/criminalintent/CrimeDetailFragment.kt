@@ -121,11 +121,6 @@ class CrimeDetailFragment : Fragment() {
                 }
             }
             callCrimeSuspect.isEnabled = selectedSuspectPhoneNumber.isNotEmpty()
-
-//            val captureImageIntent = takePhoto.contract.createIntent(
-//                requireContext(),
-//                null
-//            )
             val captureImageIntent = takePhoto.contract.createIntent(
                 requireContext(),
                 Uri.parse("")
@@ -200,6 +195,11 @@ class CrimeDetailFragment : Fragment() {
                 startActivity(intent)
             }
             updatePhoto(crime.photoFileName)
+            crimePhoto.setOnClickListener {
+                crime.photoFileName?.let { it1 ->
+                    findNavController().navigate(CrimeDetailFragmentDirections.openZoomImage(it1))
+                }
+            }
         }
     }
 

@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/crimeListFragment"
         android:name="com.example.criminalintent.CrimeListFragment"
-        tools:layout="@layout/fragment_crime_list"
-        android:label="CrimeListFragment" >
+        android:label="CrimeListFragment"
+        tools:layout="@layout/fragment_crime_list">
         <action
             android:id="@+id/show_crime_detail"
             app:destination="@id/crimeDetailFragment" />
@@ -25,13 +25,25 @@
         <action
             android:id="@+id/select_date"
             app:destination="@id/datePickerFragment" />
+        <action
+            android:id="@+id/open_zoom_image"
+            app:destination="@id/zoomedInImageFragment" />
     </fragment>
     <dialog
         android:id="@+id/datePickerFragment"
         android:name="com.example.criminalintent.DatePickerFragment"
-        android:label="DatePickerFragment" >
+        android:label="DatePickerFragment">
         <argument
             android:name="crimeDate"
             app:argType="java.util.Date" />
+    </dialog>
+    <dialog
+        android:id="@+id/zoomedInImageFragment"
+        android:name="com.example.criminalintent.ZoomedInImageFragment"
+        android:label="ZoomedInImageFragment"
+        tools:layout="@layout/fragment_zoomed_in_image">
+        <argument
+            android:name="photoFileName"
+            app:argType="string" />
     </dialog>
 </navigation>
